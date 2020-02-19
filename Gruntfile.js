@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
 	var mozjpeg = require('imagemin-mozjpeg');
 	// Project configuration.
 	grunt.initConfig({
@@ -17,7 +16,8 @@ module.exports = function(grunt) {
 				options: {
 					optimizationLevel: 3,
 					svgoPlugins: [{removeViewBox: false}],
-					use: [mozjpeg()] // Example plugin usage
+					// use: [imagemin.gifsicle(), imagemin.jpegtran(), imagemin.optipng(), imagemin.svgo()] // Example plugin usage
+					use: [mozjpeg()]
 				},
 				files: {
 					'dist/img.png': 'src/img.png',
