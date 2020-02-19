@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
+	var mozjpeg = require('imagemin-mozjpeg');
+	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		// Uglify
@@ -8,6 +9,29 @@ module.exports = function(grunt) {
 			build: {
 				src: 'js/script.js',
 				dest: 'js/script.min.js'
+			}
+		},
+		// Image minify
+		imagemin: {
+			static: {
+				options: {
+					optimizationLevel: 3,
+					svgoPlugins: [{removeViewBox: false}],
+					use: [mozjpeg()] // Example plugin usage
+				},
+				files: {
+					'dist/img.png': 'src/img.png',
+					'dist/img.jpg': 'src/img.jpg',
+					'dist/img.gif': 'src/img.gif'
+				}
+			},
+			dynamic: {
+				files: [{
+					expand: true,
+					cwd: 'src/',
+					src: ['assets/*.{png,jpg,gif}'],
+					dest: 'dist/'
+				}]
 			}
 		},
 		// Watch
@@ -47,6 +71,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-sass');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
@@ -56,5 +81,6 @@ module.exports = function(grunt) {
 	// grunt.registerTask('default', ['csslint', 'jshint']);
 	// grunt.registerTask('default', ['validation']);
 	grunt.registerTask('ugly', ['uglify']);
+	grunt.registerTask('default', ['imagemin']);
 	grunt.registerTask('default', ['watch']);
 };

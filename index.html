@@ -9,36 +9,51 @@
 
 	<!-- Website header -->
 	<div class="bg-dark py-5">
-		<h1 class="text-white display-1 text-center">News API</h1>
+		<h1 class="text-white display-1 text-center">The News</h1>
+		<h2 class="text-muted text-center">Raw, Unadulterated Facts</h2>
+		
 		<!-- Container of navigation and filters -->
-		<div class="row">
+		<div class="row mx-0 py-2">
 			<!-- Container that contains Country -->
-			<div class="col-3">
-				<select id="selectCountry" class="custom-select custom-select-lg">
-					<option value=""></option>
+			<div class="col">
+				<select id="selectCountry" class="custom-select custom-select-sm">
+					<option value="noCountry" selected>Select Country</option>
+					<option value="newZealand">New Zealand</option>
+					<option value="australia">Australia</option>
+					<option value="usa">United States of America</option>
+					<option value="england">England</option>
 				</select>
 			</div>
 			<!-- Container that contains news catagory -->
-			<div class="col-3">
-				<select id="selectCatagory" class="custom-select custom-select-lg">
-					<option value=""></option>
+			<div class="col">
+				<select id="selectCatagory" class="custom-select custom-select-sm">
+					<option value="noCatagory" selected>Select Catagory</option>
+					<option value="sports">Sports</option>
+					<option value="international">International</option>
+					<option value="national">National</option>
+					<option value="political">Political</option>
+					<option value="entertainment">Entertainment</option>
 				</select>
 			</div>
 			<!-- Container that contains search bar -->
-			<div class="col-3">
-				<input type="text" id="searchQuery" class="form-control form-control-lg" placeholder="Search Query">
+			<div class="col">
+				<input type="text" id="searchQuery" class="form-control form-control-sm" placeholder="Search Query">
 			</div>
 			<!-- Container that contains search button -->
-			<div class="col-3">
-				<button id="searchNews" class="btn-lg btn btn-primary">Search</button>
+			<div class="col-1">
+				<button id="searchNews" class="btn-sm btn btn-primary float-right">Search</button>
 			</div>
 		</div>
-	</div>
+		<!-- Navigation ends -->
+
+	</div> 
+	<!-- Header ends -->
 
 	<!-- Website contents -->
 	<div class="container shadow mb-5 bg-light">
-		
+		<img src="assets/temporary.jpg" class="image-fluid mx-auto pt-5 d-block" alt="temp-img">
 	</div>
+	<!-- Website contents end -->
 
 	<!-- Imported JS -->
 	<script src="node_modules/jquery/dist/jquery.min.js"></script>
