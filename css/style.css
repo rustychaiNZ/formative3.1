@@ -1,0 +1,11 @@
+.container {
+  min-height: 75vh;
+}
+
+@media (min-width: 1500px) {
+  .container {
+    max-width: 1500px;
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
