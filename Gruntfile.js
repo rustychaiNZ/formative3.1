@@ -20,9 +20,7 @@ module.exports = function(grunt) {
 					use: [mozjpeg()]
 				},
 				files: {
-					'dist/img.png': 'src/img.png',
-					'dist/img.jpg': 'src/img.jpg',
-					'dist/img.gif': 'src/img.gif'
+					'dist/img.png': 'src/img.png', 'dist/img.jpg': 'src/img.jpg', 'dist/img.gif': 'src/img.gif'
 				}
 			},
 			dynamic: {
@@ -38,7 +36,21 @@ module.exports = function(grunt) {
 		watch: {
 			all: {
 				files: ['sass/style.scss', 'css/style.css', 'js/script.js'],
-				tasks: ['sass', 'csslint', 'jshint']
+				tasks: ['sass', 'csslint', 'jshint', 'validation']
+			}
+		},
+		// Html validation
+		validation: {
+			options: {
+				reset: grunt.option('reset') || false,
+				stoponerror: false,
+				remotePath: 'http://decodize.com/',
+				remoteFiles: ['html/moving-from-wordpress-to-octopress/', 'css/site-preloading-methods/'], //or
+				remoteFiles: 'validation-files.json', // JSON file contains array of page paths.
+				relaxerror: ['Bad value X-UA-Compatible for attribute http-equiv on element meta.'] //ignores these errors
+			},
+			files: {
+				src: ['index.html']
 			}
 		},
 		// Sass
@@ -49,7 +61,6 @@ module.exports = function(grunt) {
     			},
     			files: {                         // Dictionary of files
     				'css/style.css': 'sass/style.scss'    // 'destination': 'source'
-		
     			}
     		}
     	},
@@ -70,17 +81,19 @@ module.exports = function(grunt) {
 	// Html Validator
 	});
 
+	// Loading grunt tasks
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-sass');
+	grunt.loadNpmTasks('grunt-html-validation');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	
 
-	// grunt.registerTask('default', ['csslint', 'jshint']);
-	// grunt.registerTask('default', ['validation']);
+	// Register grunt tasks
 	grunt.registerTask('ugly', ['uglify']);
+	grunt.registerTask('default', ['validation']);
 	grunt.registerTask('default', ['imagemin']);
 	grunt.registerTask('default', ['watch']);
 };
