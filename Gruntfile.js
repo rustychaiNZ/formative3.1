@@ -36,23 +36,23 @@ module.exports = function(grunt) {
 		watch: {
 			all: {
 				files: ['sass/style.scss', 'css/style.css', 'js/script.js'],
-				tasks: ['sass', 'csslint', 'jshint', 'validation']
+				tasks: ['sass', 'csslint', 'jshint']
 			}
 		},
 		// Html validation
-		validation: {
-			options: {
-				reset: grunt.option('reset') || false,
-				stoponerror: false,
-				remotePath: 'http://decodize.com/',
-				remoteFiles: ['html/moving-from-wordpress-to-octopress/', 'css/site-preloading-methods/'], //or
-				remoteFiles: 'validation-files.json', // JSON file contains array of page paths.
-				relaxerror: ['Bad value X-UA-Compatible for attribute http-equiv on element meta.'] //ignores these errors
-			},
-			files: {
-				src: ['index.html']
-			}
-		},
+		// validation: {
+			// options: {
+				// reset: grunt.option('reset') || false,
+				// stoponerror: false,
+				// remotePath: 'http://decodize.com/',
+				// remoteFiles: ['html/moving-from-wordpress-to-octopress/', 'css/site-preloading-methods/'], //or
+				// remoteFiles: 'validation-files.json', // JSON file contains array of page paths.
+				// relaxerror: ['Bad value X-UA-Compatible for attribute http-equiv on element meta.'] //ignores these errors
+			// },
+			// files: {
+				// src: ['index.html']
+			// }
+		// },
 		// Sass
 		sass: {                              // Task
     		dist: {                            // Target
@@ -76,7 +76,7 @@ module.exports = function(grunt) {
 		},
 		// Js Hint
 		jshint: {
-			all: ['Gruntfile.js', 'js/*.js']
+			all: ['!Gruntfile.js', 'js/script.js', '!script.min.js']
 		}
 	// Html Validator
 	});
@@ -86,14 +86,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-sass');
-	grunt.loadNpmTasks('grunt-html-validation');
+	// grunt.loadNpmTasks('grunt-html-validation');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	
 
 	// Register grunt tasks
 	grunt.registerTask('ugly', ['uglify']);
-	grunt.registerTask('default', ['validation']);
+	// grunt.registerTask('default', ['validation']);
 	grunt.registerTask('default', ['imagemin']);
 	grunt.registerTask('default', ['watch']);
 };
