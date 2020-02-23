@@ -4,6 +4,7 @@ var myKey = JSON.parse(apiKey);
 console.log(myKey[0]);
 myKey = myKey[0].key;
 
+// Lists of codes provided by James Murry
 var languages = [{
 	code: 0,
 	name: 'All'
@@ -245,13 +246,13 @@ $(document).ready(function(){
 	var category;
 	var countryCode;
 	var categoryCode;
-
-
-
+	
 	$('#searchNews').click(function(){
 		// Gets user input for country and category and stores them in variables
 		country = document.getElementById('selectCountry').value;
 		category = document.getElementById('selectCatagory').value;
+
+		document.getElementById('loader').innerHTML = '';
 		
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
@@ -260,8 +261,14 @@ $(document).ready(function(){
 				categoryCode = categorys[i].code;
 			} 
 			// If user hasn't selected a catagory, then display error message
-			else if (category === 'noCatagory'){ 
-				alert('Please Select a Catagory');
+			else if (category === 'noCatagory'){
+				document.getElementById('loader').innerHTML += 
+					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>O Oh!</strong> Please select a category.
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>`;
 				break;
 			}
 		}
@@ -274,7 +281,13 @@ $(document).ready(function(){
 			} 
 			// If user hasn't selected a catagory, then display error message
 			else if (country === 'noCountry'){ 
-				alert('Please Select a Country');
+				document.getElementById('loader').innerHTML += 
+					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>O Oh!</strong> Please select a country.
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>`;
 				break;
 			}
 		}
@@ -283,6 +296,7 @@ $(document).ready(function(){
 
 		console.log(countryCode + ' ' + categoryCode + ' ' + url);
 
+		// Gathers and outputs news articles
 		$.ajax({
 			url : url,
 			method : 'GET',
@@ -298,7 +312,8 @@ $(document).ready(function(){
 				let output = '';
 				let latestNews = news.articles;
 				console.log(latestNews);
-	
+				
+				// Displays articles as cards
 				for(i in latestNews){
 					output += 
 						`<div class="col-4 py-4">
