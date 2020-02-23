@@ -4,6 +4,8 @@
 
 .spinner-border {
   display: none;
+  width: 35rem;
+  height: 35rem;
 }
 
 @media (min-width: 1500px) {

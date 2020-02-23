@@ -247,7 +247,7 @@ $(document).ready(function(){
 	var countryCode = '';
 	var categoryCode = '';
 	var searchTerm;
-	var userInputtedSearchTerm;
+	var userInputtedSearchTerm = '';
 
 	$('#searchNews').click(function(){
 		// Gets user input for country and category and stores them in variables
@@ -260,24 +260,17 @@ $(document).ready(function(){
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
 			// Changes users input to a code
-			if (category === categorys[i].name){
+			if ((category === categorys[i].name) && (country !== 'noCountry')){
 				categoryCode = '&category=' + categorys[i].code;
 			} 
 			// If user has searched for a category on it's own
-			if ((category === categorys[i].name) && (country === 'noCountry')){
+			else if ((category === categorys[i].name) && (country === 'noCountry')){
 				categoryCode = 'category=' + categorys[i].code;
 				countryCode = '';
 			}
-			// If user hasn't selected a catagory, then display error message
-			else if ((category === 'noCatagory') && (country === 'noCountry') && (userInputtedSearchTerm === '')){
-				document.getElementById('messages').innerHTML += 
-					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<strong>O Oh!</strong> Please select a category.
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>`;
-				break;
+			else if ((category === categorys[i].name) && (country === 'noCountry') && (userInputtedSearchTerm === '')){
+				categoryCode = 'category=' + categorys[i].code;
+				countryCode = '';
 			}
 		}
 
@@ -290,15 +283,14 @@ $(document).ready(function(){
 			} 
 			else if((country === countrys[i].name) && (category !== 'noCatagory')){
 				countryCode = 'country=' + countrys[i].code;
-			}
-			// else if ((country === countrys[i].name) && )
+			} 
 			// If user hasn't selected a catagory, then display error message
-			else if ((country === 'noCountry') && (category === 'noCatagory') && (userInputtedSearchTerm === '')){ 
+			else if ((country === 'noCountry') && (category === 'noCatagory') && (searchTerm === '')){ 
 				countryCode = '';
 				categoryCode = '';
 				document.getElementById('messages').innerHTML += 
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<strong>O Oh!</strong> Please select a country.
+						<strong>O Oh!</strong> Please select a country, a category or enter a search query.
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -322,7 +314,7 @@ $(document).ready(function(){
 			// Gives verification to the user
 			document.getElementById('newsResults').innerHTML = '';
 			document.getElementById('messages').innerHTML += `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
-		} 
+		}
 		// If user hasn't entered anything in the search query box, then the code will be removed from the url
 		else if(userInputtedSearchTerm == ''){
 			searchTerm = '';
@@ -375,8 +367,5 @@ $(document).ready(function(){
 				console.log('An error has occured trying to load your page');
 			}
 		});
-	});
-	$('#test').click(function(){
-		$('.spinner-border').show();
 	});
 });
