@@ -254,7 +254,7 @@ $(document).ready(function(){
 		country = document.getElementById('selectCountry').value;
 		category = document.getElementById('selectCatagory').value;
 
-		document.getElementById('loader').innerHTML = '';
+		document.getElementById('messages').innerHTML = '';
 		document.getElementById('newsResults').innerHTML = '';
 		
 		// Takes user's input for category and converts and checks for code
@@ -269,8 +269,8 @@ $(document).ready(function(){
 				countryCode = '';
 			}
 			// If user hasn't selected a catagory, then display error message
-			else if ((category === 'noCatagory') && (country === 'noCountry')){
-				document.getElementById('loader').innerHTML += 
+			else if ((category === 'noCatagory') && (country === 'noCountry') && (userInputtedSearchTerm === '')){
+				document.getElementById('messages').innerHTML += 
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						<strong>O Oh!</strong> Please select a category.
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -293,9 +293,10 @@ $(document).ready(function(){
 			}
 			// else if ((country === countrys[i].name) && )
 			// If user hasn't selected a catagory, then display error message
-			else if ((country === 'noCountry') && (category === 'noCatagory')){ 
+			else if ((country === 'noCountry') && (category === 'noCatagory') && (userInputtedSearchTerm === '')){ 
 				countryCode = '';
-				document.getElementById('loader').innerHTML += 
+				categoryCode = '';
+				document.getElementById('messages').innerHTML += 
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						<strong>O Oh!</strong> Please select a country.
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -319,8 +320,8 @@ $(document).ready(function(){
 			document.getElementById('selectCatagory').value = 'noCatagory';
 			document.getElementById('selectCountry').value = 'noCountry';
 			// Gives verification to the user
-			document.getElementById('loader').innerHTML = `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
 			document.getElementById('newsResults').innerHTML = '';
+			document.getElementById('messages').innerHTML += `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
 		} 
 		// If user hasn't entered anything in the search query box, then the code will be removed from the url
 		else if(userInputtedSearchTerm == ''){
@@ -338,10 +339,10 @@ $(document).ready(function(){
 			dataType : 'Json',
 	
 			beforeSend : function(){
-				$('.progress').show();
+				$('.spinner-border').show();
 			},
 			complete : function(){
-				$('.progress').hide();
+				$('.spinner-border').hide();
 			},
 			success : function(news){
 				let output = '';
@@ -374,5 +375,8 @@ $(document).ready(function(){
 				console.log('An error has occured trying to load your page');
 			}
 		});
+	});
+	$('#test').click(function(){
+		$('.spinner-border').show();
 	});
 });
