@@ -244,24 +244,32 @@ $(document).ready(function(){
 	var i;
 	var country;
 	var category;
-	var countryCode;
-	var categoryCode;
-	
+	var countryCode = '';
+	var categoryCode = '';
+	var searchTerm;
+	var userInputtedSearchTerm;
+
 	$('#searchNews').click(function(){
 		// Gets user input for country and category and stores them in variables
 		country = document.getElementById('selectCountry').value;
 		category = document.getElementById('selectCatagory').value;
 
 		document.getElementById('loader').innerHTML = '';
+		document.getElementById('newsResults').innerHTML = '';
 		
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
 			// Changes users input to a code
 			if (category === categorys[i].name){
-				categoryCode = categorys[i].code;
+				categoryCode = '&category=' + categorys[i].code;
 			} 
+			// If user has searched for a category on it's own
+			if ((category === categorys[i].name) && (country === 'noCountry')){
+				categoryCode = 'category=' + categorys[i].code;
+				countryCode = '';
+			}
 			// If user hasn't selected a catagory, then display error message
-			else if (category === 'noCatagory'){
+			else if ((category === 'noCatagory') && (country === 'noCountry')){
 				document.getElementById('loader').innerHTML += 
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						<strong>O Oh!</strong> Please select a category.
@@ -276,11 +284,17 @@ $(document).ready(function(){
 		// Takes user's input for country and coverts and checks for code
 		for(i = 0; i < countrys.length; i++){
 			// Changes users input to a code
-			if (country === countrys[i].name){
-				countryCode = countrys[i].code;
+			if ((country === countrys[i].name) && (category === 'noCatagory')){
+				countryCode = 'country=' + countrys[i].code;
+				categoryCode = '';
 			} 
+			else if((country === countrys[i].name) && (category !== 'noCatagory')){
+				countryCode = 'country=' + countrys[i].code;
+			}
+			// else if ((country === countrys[i].name) && )
 			// If user hasn't selected a catagory, then display error message
-			else if (country === 'noCountry'){ 
+			else if ((country === 'noCountry') && (category === 'noCatagory')){ 
+				countryCode = '';
 				document.getElementById('loader').innerHTML += 
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						<strong>O Oh!</strong> Please select a country.
@@ -292,7 +306,28 @@ $(document).ready(function(){
 			}
 		}
 
-		let url = 'http://newsapi.org/v2/top-headlines?country=' + countryCode + '&category=' + categoryCode + '&language=en' + '&apiKey=' + myKey;
+		// Takes user's input for search query 
+		userInputtedSearchTerm = document.getElementById('searchQuery').value;
+		console.log(userInputtedSearchTerm);
+		// Saves user's search term and adds it to url
+		if(userInputtedSearchTerm !== ''){
+			searchTerm = 'q=' + userInputtedSearchTerm;
+			countryCode = '';
+			categoryCode = '';
+
+			document.getElementById('searchQuery').value = '';
+			document.getElementById('selectCatagory').value = 'noCatagory';
+			document.getElementById('selectCountry').value = 'noCountry';
+			// Gives verification to the user
+			document.getElementById('loader').innerHTML = `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
+			document.getElementById('newsResults').innerHTML = '';
+		} 
+		// If user hasn't entered anything in the search query box, then the code will be removed from the url
+		else if(userInputtedSearchTerm == ''){
+			searchTerm = '';
+		}
+
+		let url = 'http://newsapi.org/v2/top-headlines?' + countryCode + categoryCode + searchTerm + '&apiKey=' + myKey;
 
 		console.log(countryCode + ' ' + categoryCode + ' ' + url);
 
@@ -336,7 +371,7 @@ $(document).ready(function(){
 				}
 			},
 			error : function(){
-				alert('An error has occured trying to load your page');
+				console.log('An error has occured trying to load your page');
 			}
 		});
 	});
