@@ -1,7 +1,4 @@
-console.log('hello world');
-
 var myKey = JSON.parse(apiKey);
-console.log(myKey[0]);
 myKey = myKey[0].key;
 
 // Lists of codes provided by James Murry
@@ -319,7 +316,6 @@ $(document).ready(function(){
 	function searchAll(){
 		// Takes user's input for search query 
 		userInputtedSearchTerm = document.getElementById('searchQuery').value;
-		console.log(userInputtedSearchTerm);
 		// Saves user's search term and adds it to url
 		if(userInputtedSearchTerm !== ''){
 			endPoint = 'everything';
@@ -353,8 +349,6 @@ $(document).ready(function(){
 		searchAll();
 		// Url used that is dynamically changed based off of what the user selects
 		var url = 'http://newsapi.org/v2/' + endPoint + '?' + countryCode + categoryCode + searchTerm + '&apiKey=' + myKey; 
-		// Logging for developer
-		console.log(countryCode + ' ' + categoryCode + ' ' + url);
 
 		// Gathers and outputs news articles
 		$.ajax({
@@ -363,21 +357,20 @@ $(document).ready(function(){
 			dataType : 'Json',
 	
 			beforeSend : function(){
-				$('.spinner-border').show();
+				$('.spinner-border').show(); 
 			},
-			complete : function(){
+			complete : function(){ 
 				$('.spinner-border').hide();
 			},
 			success : function(news){
 				var output = '';
 				var latestNews = news.articles;
-				console.log(latestNews);
 				
 				// Displays articles as cards
 				for(i in latestNews){
 					// Outputs the articles in a card format
 					output += 
-						'<div class="col-4 py-4">' +
+						'<div class="col-md-6 col-lg-4 col-xl-3 py-4">' +
 							'<div class="card shadow-sm">' +
 								'<img onerror="backupImage(this)" src="' + latestNews[i].urlToImage + '" alt="article image" style="width:100%;">' +
 								'<div class="card-body">' +
@@ -396,7 +389,7 @@ $(document).ready(function(){
 				}
 			},
 			error : function(){
-				console.log('An error has occured trying to load your page');
+				alert('An error has occured trying to load your page');
 			}
 		});
 	});

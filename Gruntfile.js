@@ -3,11 +3,23 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		// Uglify
+		// Uglify js
 		uglify: {
 			build: {
 				src: 'js/script.js',
 				dest: 'js/script.min.js'
+			}
+		},
+		// Ugly css min
+		cssmin: {
+			target: {
+				files: [{
+					expand: true,
+					cwd: 'css/',
+					src: ['*.css', '!*.min.css'],
+					dest: 'css/',
+					ext: '.min.css'
+				}]
 			}
 		},
 		// Image minify
@@ -38,7 +50,7 @@ module.exports = function(grunt) {
 		watch: {
 			all: {
 				files: ['sass/style.scss', 'css/style.css', 'js/script.js'],
-				tasks: ['sass', 'csslint', 'jshint']
+				tasks: ['sass', 'csslint', 'jshint', 'cssmin', 'uglify']
 			}
 		},
 		// Html validation
@@ -85,6 +97,7 @@ module.exports = function(grunt) {
 
 	// Loading grunt tasks
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-sass');

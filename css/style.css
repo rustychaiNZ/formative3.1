@@ -8,9 +8,14 @@
   height: 35rem;
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1496px) {
   .container {
-    max-width: 1500px;
+    max-width: 1496px;
+  }
+}
+@media (max-width: 460px) {
+  .container {
+    max-width: 100%;
   }
 }
 

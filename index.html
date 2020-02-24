@@ -3,7 +3,7 @@
 <head>
 	<title>Formative 3.1</title>
 	<link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="css/style.min.css">
 </head>
 <body class="bg-secondary">
 
@@ -15,7 +15,7 @@
 		<!-- Container of navigation and filters -->
 		<div class="row mx-5 mt-3 py-3 bg-secondary rounded shadow">
 			<!-- Container that contains Country -->
-			<div class="col">
+			<div class="col-sm">
 				<select id="selectCountry" class="custom-select custom-select-sm">
 					<option value="noCountry">Select Country</option>
 					<option value="Australia">Australia</option>
@@ -28,7 +28,7 @@
 				</select>
 			</div>
 			<!-- Container that contains news catagory -->
-			<div class="col">
+			<div class="col-sm">
 				<select id="selectCatagory" class="custom-select custom-select-sm">
 					<option value="noCatagory">Select Catagory</option>
 					<option value="General">General</option>
@@ -41,11 +41,11 @@
 				</select>
 			</div>
 			<!-- Container that contains search bar -->
-			<div class="col">
+			<div class="col-sm">
 				<input type="text" id="searchQuery" class="form-control form-control-sm" placeholder="Search Query">
 			</div>
 			<!-- Container that contains search button -->
-			<div class="col-1">
+			<div class="col-sm">
 				<button id="searchNews" class="btn-sm btn btn-warning float-right">Search</button>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 			
 		</div>
 		<!-- News Results -->
-		<div id="newsResults" class="row">
+		<div id="newsResults" class="row align-items-center">
 			
 		</div>
 		<!-- Progress -->
@@ -95,7 +95,7 @@
 	<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<!-- Custom Js -->
 	<script src="js/config.json"></script>
-	<script src="js/script.js"></script>
+	<script src="js/script.min.js"></script>
 
 </body>
 </html>
