@@ -239,6 +239,13 @@ var categorys = [{
 	name: 'Technology'
 }];
 
+// Function that auto fills broken images
+function backupImage(imageSource){
+	imageSource.src = "assets/temporary.jpg";
+	imageSource.onerror = "";
+	return true;
+}
+
 $(document).ready(function(){
 	
 	var i;
@@ -246,65 +253,77 @@ $(document).ready(function(){
 	var category;
 	var countryCode = '';
 	var categoryCode = '';
+	var endPoint;
 	var searchTerm;
 	var userInputtedSearchTerm = '';
 
-	$('#searchNews').click(function(){
+	// Function for finding user's input for category
+	function getCatagory(){
 		// Gets user input for country and category and stores them in variables
-		country = document.getElementById('selectCountry').value;
 		category = document.getElementById('selectCatagory').value;
-
-		document.getElementById('messages').innerHTML = '';
-		document.getElementById('newsResults').innerHTML = '';
-		
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
 			// Changes users input to a code
 			if ((category === categorys[i].name) && (country !== 'noCountry')){
 				categoryCode = '&category=' + categorys[i].code;
+				endPoint = 'top-headlines';
 			} 
 			// If user has searched for a category on it's own
 			else if ((category === categorys[i].name) && (country === 'noCountry')){
 				categoryCode = 'category=' + categorys[i].code;
 				countryCode = '';
+				endPoint = 'top-headlines';
 			}
 			else if ((category === categorys[i].name) && (country === 'noCountry') && (userInputtedSearchTerm === '')){
 				categoryCode = 'category=' + categorys[i].code;
 				countryCode = '';
+				endPoint = 'top-headlines';
 			}
 		}
-
+	}
+	// Get catagory ends
+	
+	// Function for finding user's input for country
+	function getCountry(){
+		// Gets user input for country and category and stores them in variables
+		country = document.getElementById('selectCountry').value;
 		// Takes user's input for country and coverts and checks for code
 		for(i = 0; i < countrys.length; i++){
 			// Changes users input to a code
 			if ((country === countrys[i].name) && (category === 'noCatagory')){
 				countryCode = 'country=' + countrys[i].code;
 				categoryCode = '';
+				endPoint = 'top-headlines';
 			} 
 			else if((country === countrys[i].name) && (category !== 'noCatagory')){
 				countryCode = 'country=' + countrys[i].code;
+				endPoint = 'top-headlines';
 			} 
 			// If user hasn't selected a catagory, then display error message
 			else if ((country === 'noCountry') && (category === 'noCatagory') && (searchTerm === '')){ 
 				countryCode = '';
 				categoryCode = '';
 				document.getElementById('messages').innerHTML += 
-					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
-						<strong>O Oh!</strong> Please select a country, a category or enter a search query.
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>`;
+					'<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+						'<strong>O Oh!</strong> Please select a country, a category or enter a search query.' +
+						'<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+							'<span aria-hidden="true">&times;</span>' +
+						'</button>' +
+					'</div>';
 				break;
 			}
 		}
+	}
 
+	// Function for user search queries
+	function searchAll(){
 		// Takes user's input for search query 
 		userInputtedSearchTerm = document.getElementById('searchQuery').value;
 		console.log(userInputtedSearchTerm);
 		// Saves user's search term and adds it to url
 		if(userInputtedSearchTerm !== ''){
-			searchTerm = 'q=' + userInputtedSearchTerm;
+			endPoint = 'everything';
+			searchTerm = 'q=' + userInputtedSearchTerm + '&language=en';
 			countryCode = '';
 			categoryCode = '';
 
@@ -313,15 +332,28 @@ $(document).ready(function(){
 			document.getElementById('selectCountry').value = 'noCountry';
 			// Gives verification to the user
 			document.getElementById('newsResults').innerHTML = '';
-			document.getElementById('messages').innerHTML += `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
+			document.getElementById('messages').innerHTML += '<h3>Query:<b> ' + userInputtedSearchTerm + '</b></h3>';
 		}
 		// If user hasn't entered anything in the search query box, then the code will be removed from the url
 		else if(userInputtedSearchTerm == ''){
 			searchTerm = '';
 		}
+	}
 
-		let url = 'http://newsapi.org/v2/top-headlines?' + countryCode + categoryCode + searchTerm + '&apiKey=' + myKey;
+	$('#searchNews').click(function(){
+		// Clears fields for new site message and articles to be displayed
+		document.getElementById('messages').innerHTML = '';
+		document.getElementById('newsResults').innerHTML = '';
 
+		// Search based off of category
+		getCatagory();
+		// Search based of selected country
+		getCountry();
+		// Search based off of user's input
+		searchAll();
+		// Url used that is dynamically changed based off of what the user selects
+		var url = 'http://newsapi.org/v2/' + endPoint + '?' + countryCode + categoryCode + searchTerm + '&apiKey=' + myKey; 
+		// Logging for developer
 		console.log(countryCode + ' ' + categoryCode + ' ' + url);
 
 		// Gathers and outputs news articles
@@ -337,28 +369,28 @@ $(document).ready(function(){
 				$('.spinner-border').hide();
 			},
 			success : function(news){
-				let output = '';
-				let latestNews = news.articles;
+				var output = '';
+				var latestNews = news.articles;
 				console.log(latestNews);
 				
 				// Displays articles as cards
 				for(i in latestNews){
+					// Outputs the articles in a card format
 					output += 
-						`<div class="col-4 py-4">
-							<div class="card shadow-sm">
-								<img src="${latestNews[i].urlToImage}" alt="article image" style="width:100%;">
-								<div class="card-body">
-									<h4>${latestNews[i].title}</h4>
-									<h5 class="small text-secondary">${latestNews[i].author} - ${latestNews[i].source.name}</h5>
-									<p>${latestNews[i].description}</p>
-								</div>
-								<div class="card-footer">
-									<a href="${latestNews[i].url}" target="_blank"><button class="btn btn-primary">Full Article</button></a>
-								</div>
-							</div>
-						</div>`;
+						'<div class="col-4 py-4">' +
+							'<div class="card shadow-sm">' +
+								'<img onerror="backupImage(this)" src="' + latestNews[i].urlToImage + '" alt="article image" style="width:100%;">' +
+								'<div class="card-body">' +
+									'<h4>' + latestNews[i].title + '</h4>' +
+									'<h5 class="small text-secondary">' + latestNews[i].author + ' - ' + latestNews[i].source.name + '</h5>' +
+									'<p>' + latestNews[i].description + '</p>' +
+								'</div>' +
+								'<div class="card-footer">' +
+									'<a href="' + latestNews[i].url + '" target="_blank"><button class="btn btn-primary">Full Article</button></a>' +
+								'</div>' +
+							'</div>' +
+						'</div>';
 				}
-	
 				if(output !== ''){
 					$('#newsResults').html(output);
 				}

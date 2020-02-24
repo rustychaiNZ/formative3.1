@@ -15,12 +15,14 @@ module.exports = function(grunt) {
 			static: {
 				options: {
 					optimizationLevel: 3,
-					svgoPlugins: [{removeViewBox: false}],
+					// svgoPlugins: [{removeViewBox: false}],
 					// use: [imagemin.gifsicle(), imagemin.jpegtran(), imagemin.optipng(), imagemin.svgo()] // Example plugin usage
 					use: [mozjpeg()]
 				},
 				files: {
-					'dist/img.png': 'src/img.png', 'dist/img.jpg': 'src/img.jpg', 'dist/img.gif': 'src/img.gif'
+					'dist/img.png': 'src/img.png', 
+					'dist/img.jpg': 'src/img.jpg', 
+					'dist/img.gif': 'src/img.gif'
 				}
 			},
 			dynamic: {
@@ -28,7 +30,7 @@ module.exports = function(grunt) {
 					expand: true,
 					cwd: 'src/',
 					src: ['assets/*.{png,jpg,gif}'],
-					dest: 'dist/'
+					dest: 'assets/minifiedImages'
 				}]
 			}
 		},
@@ -60,7 +62,7 @@ module.exports = function(grunt) {
     				style: 'expanded'
     			},
     			files: {                         // Dictionary of files
-    				'css/style.css': 'sass/style.scss'    // 'destination': 'source'
+    				'css/style.css' : 'sass/style.scss'    // 'destination' : 'source'
     			}
     		}
     	},
@@ -94,6 +96,6 @@ module.exports = function(grunt) {
 	// Register grunt tasks
 	grunt.registerTask('ugly', ['uglify']);
 	// grunt.registerTask('default', ['validation']);
-	grunt.registerTask('default', ['imagemin']);
+	grunt.registerTask('imgMin', ['imagemin']);
 	grunt.registerTask('default', ['watch']);
 };
