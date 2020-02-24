@@ -370,7 +370,7 @@ $(document).ready(function(){
 				for(i in latestNews){
 					// Outputs the articles in a card format
 					output += 
-						'<div class="col-md-6 col-lg-4 col-xl-3 py-4">' +
+						'<div class="col-md-6 col-lg-4 col-xl-3 d-flex align-self-stretch py-4">' +
 							'<div class="card shadow-sm">' +
 								'<img onerror="backupImage(this)" src="' + latestNews[i].urlToImage + '" alt="article image" style="width:100%;">' +
 								'<div class="card-body">' +
