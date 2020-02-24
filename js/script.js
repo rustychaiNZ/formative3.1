@@ -1,7 +1,7 @@
 var myKey = JSON.parse(apiKey);
 myKey = myKey[0].key;
 
-// Lists of codes provided by James Murry
+// Lists of codes provided by James Murray
 var languages = [{
 	code: 0,
 	name: 'All'
