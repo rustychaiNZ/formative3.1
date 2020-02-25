@@ -256,11 +256,6 @@ $(document).ready(function(){
 
 	// Function for finding user's input for category and countries
 	function getCodes(){
-		// Gets user input for country and category and stores them in variables
-		category = document.getElementById('selectCatagory').value;
-		// Gets user input for country and category and stores them in variables
-		country = document.getElementById('selectCountry').value;
-
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
 			// Changes users input to a code
@@ -307,8 +302,6 @@ $(document).ready(function(){
 
 	// Function for user search queries
 	function searchAll(){
-		// Takes user's input for search query 
-		userInputtedSearchTerm = document.getElementById('searchQuery').value;
 		// Saves user's search term and adds it to url
 		if(userInputtedSearchTerm !== ''){
 			endPoint = 'everything';
@@ -329,6 +322,53 @@ $(document).ready(function(){
 			searchTerm = '';
 		}
 	}
+
+	// Function that disables user's input based on a whether a filter has been applied
+	function disableFilter(){
+		// Gets user input for country and category and stores them in variables
+		country = document.getElementById('selectCountry').value;
+		// Gets user input for country and category and stores them in variables
+		category = document.getElementById('selectCatagory').value;
+		// Takes user's input for search query 
+		userInputtedSearchTerm = document.getElementById('searchQuery').value;
+		
+		// Disables search box
+		if((country !== 'noCountry') || (category !== 'noCatagory')){
+			// Disables search query box
+			$('#searchQuery').prop('disabled', true);
+			console.log('testing 3');
+		}
+		else if((country === 'noCountry') && (category === 'noCatagory')){
+			// Enables the user to make custom searches
+			$('#searchQuery').prop('disabled', false);
+			console.log('testing mk2');
+		}
+		
+		// Disables filters
+		if(userInputtedSearchTerm !== ''){
+			$('#selectCountry').prop('disabled', true);
+			$('#selectCatagory').prop('disabled', true);
+		}
+		else if(userInputtedSearchTerm === ''){
+			$('#selectCountry').prop('disabled', false);
+			$('#selectCatagory').prop('disabled', false);
+		}
+	}
+
+	// Looks for change in catagory field field
+	$('#selectCatagory').change(function(){
+		disableFilter();
+		console.log('test');
+	});
+	// Looks for change in country field
+	$('#selectCountry').change(function(){
+		disableFilter();
+		console.log('test');
+	});
+	// Looks for user to input into search field
+	$('#searchQuery').keyup(function(){
+		disableFilter();
+	});
 
 	// On search button click - Run functions and display artilces
 	$('#searchNews').click(function(){
@@ -382,9 +422,9 @@ $(document).ready(function(){
 				}
 			},
 			error : function(){
-				getCountry();
+				getCodes();
 			}
 		});
-		console.log(url);
-	});
+		disableFilter();
+	}); // search function
 }); // Document ready end
