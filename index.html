@@ -16,7 +16,7 @@
 		<div class="row mx-5 mt-3 py-3 bg-secondary rounded shadow">
 			<!-- Container that contains Country -->
 			<div class="col-sm">
-				<select id="selectCountry" class="custom-select custom-select-sm">
+				<select id="selectCountry" class="border-warning custom-select custom-select-sm">
 					<option value="noCountry">Select Country</option>
 					<option value="Australia">Australia</option>
 					<option value="Canada">Canada</option>
@@ -29,7 +29,7 @@
 			</div>
 			<!-- Container that contains news catagory -->
 			<div class="col-sm">
-				<select id="selectCatagory" class="custom-select custom-select-sm">
+				<select id="selectCatagory" class="border-warning custom-select custom-select-sm">
 					<option value="noCatagory">Select Catagory</option>
 					<option value="General">General</option>
 					<option value="Business">Business</option>
@@ -41,16 +41,16 @@
 				</select>
 			</div>
 			<!-- Container that contains search bar -->
-			<div class="col-sm float-right d-block">
-				<input type="text" id="searchQuery" class="form-control form-control-sm float-right d-block" placeholder="Search Query">
-			</div>
-			<!-- Container that contains search button -->
-			<div class="col-sm-2 align-items-center">
-				<!-- <button id="resetFilters" class="btn btn-sm btn-outline-primary float-right ml-2">Reset</button> -->
-				<div class="d-flex align-items-stretch float-right ml-2">
-					<span><a id="resetFilters" class="text-warning my-0 align-middle" href="#">Reset</a></span>
-				</div>
-				<button id="searchNews" class="btn-sm btn btn-warning float-right">Search</button>
+			<div class="col-sm input-group">
+				<!-- Query search box -->
+				<input type="text" id="searchQuery" class="form-control border-warning form-control-sm round float-left d-block" placeholder="Search Query">
+				<!-- Button container -->
+				<span class="input-group-prepend ml-2">
+					<button id="searchNews" class="btn-sm btn-default btn btn-warning d-block float-left">Search</button>
+					<div class="d-flex align-items-stretch float-left ml-2">
+						<span><a id="resetFilters" class="text-warning my-0 align-middle" href="#">Reset</a></span>
+					</div>
+				</span>
 			</div>
 		</div>
 		<!-- Navigation ends -->
