@@ -429,6 +429,7 @@ $(document).ready(function(){
 				}
 			},
 			error : function(){
+				document.getElementById('messages').innerHTML = '';
 				getCodes();
 			}
 		});
