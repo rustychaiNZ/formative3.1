@@ -244,7 +244,6 @@ function backupImage(imageSource){
 }
 
 $(document).ready(function(){
-	
 	var i;
 	var country;
 	var category;
@@ -336,12 +335,10 @@ $(document).ready(function(){
 		if((country !== 'noCountry') || (category !== 'noCatagory')){
 			// Disables search query box
 			$('#searchQuery').prop('disabled', true);
-			console.log('testing 3');
 		}
 		else if((country === 'noCountry') && (category === 'noCatagory')){
 			// Enables the user to make custom searches
 			$('#searchQuery').prop('disabled', false);
-			console.log('testing mk2');
 		}
 		
 		// Disables filters
@@ -358,15 +355,23 @@ $(document).ready(function(){
 	// Looks for change in catagory field field
 	$('#selectCatagory').change(function(){
 		disableFilter();
-		console.log('test');
 	});
 	// Looks for change in country field
 	$('#selectCountry').change(function(){
 		disableFilter();
-		console.log('test');
 	});
 	// Looks for user to input into search field
 	$('#searchQuery').keyup(function(){
+		disableFilter();
+	});
+	// Resets user's selected filters
+	$('#resetFilters').click(function(){
+		country = document.getElementById('selectCountry').value = 'noCountry';
+		// Gets user input for country and category and stores them in variables
+		category = document.getElementById('selectCatagory').value = 'noCatagory';
+		// Takes user's input for search query 
+		userInputtedSearchTerm = document.getElementById('searchQuery').value = '';
+		// Disables unrelevent filters to the user
 		disableFilter();
 	});
 
@@ -380,6 +385,8 @@ $(document).ready(function(){
 		getCodes();
 		// Search based off of user's input
 		searchAll();
+		// Disables unrelevent filters to the user
+		disableFilter();
 		// Url used that is dynamically changed based off of what the user selects
 		var url = `http://newsapi.org/v2/${endPoint}?${countryCode}${categoryCode}${searchTerm}&apiKey=${myKey}`;
 
@@ -425,6 +432,5 @@ $(document).ready(function(){
 				getCodes();
 			}
 		});
-		disableFilter();
 	}); // search function
 }); // Document ready end
