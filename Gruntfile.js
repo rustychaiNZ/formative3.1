@@ -90,13 +90,24 @@ module.exports = function(grunt) {
 		},
 		// Js Hint
 		jshint: {
-			all: ['!Gruntfile.js', 'js/script.js', '!script.min.js']
+			files: ['!Gruntfile.js', 'js/script.js', '!script.min.js'],
+			options: {
+            // options here to override JSHint defaults
+            	globals: {
+					jQuery: true,
+					console: true,
+					module: true,
+					document: true
+            	},
+			laxcomma: true,
+			esversion : 6
+			}	
 		}
 	// Html Validator
 	});
 
 	// Loading grunt tasks
-	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-uglify-es');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-imagemin');
 	grunt.loadNpmTasks('grunt-contrib-watch');

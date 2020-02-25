@@ -254,10 +254,13 @@ $(document).ready(function(){
 	var searchTerm;
 	var userInputtedSearchTerm = '';
 
-	// Function for finding user's input for category
-	function getCatagory(){
+	// Function for finding user's input for category and countries
+	function getCodes(){
 		// Gets user input for country and category and stores them in variables
 		category = document.getElementById('selectCatagory').value;
+		// Gets user input for country and category and stores them in variables
+		country = document.getElementById('selectCountry').value;
+
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
 			// Changes users input to a code
@@ -271,19 +274,8 @@ $(document).ready(function(){
 				countryCode = '';
 				endPoint = 'top-headlines';
 			}
-			else if ((category === categorys[i].name) && (country === 'noCountry') && (userInputtedSearchTerm === '')){
-				categoryCode = 'category=' + categorys[i].code;
-				countryCode = '';
-				endPoint = 'top-headlines';
-			}
 		}
-	}
-	// Get catagory ends
-	
-	// Function for finding user's input for country
-	function getCountry(){
-		// Gets user input for country and category and stores them in variables
-		country = document.getElementById('selectCountry').value;
+
 		// Takes user's input for country and coverts and checks for code
 		for(i = 0; i < countrys.length; i++){
 			// Changes users input to a code
@@ -300,17 +292,18 @@ $(document).ready(function(){
 			else if ((country === 'noCountry') && (category === 'noCatagory') && (searchTerm === '')){ 
 				countryCode = '';
 				categoryCode = '';
-				document.getElementById('messages').innerHTML += 
-					'<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-						'<strong>O Oh!</strong> Please select a country, a category or enter a search query.' +
-						'<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-							'<span aria-hidden="true">&times;</span>' +
-						'</button>' +
-					'</div>';
+				document.getElementById('messages').innerHTML +=
+					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<strong>O Oh!</strong> Please select a country, a category or enter a search query.
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"> 
+							<span aria-hidden="true">&times;</span> 
+						</button> 
+					</div>`;
 				break;
 			}
 		}
 	}
+	// Get codes ends
 
 	// Function for user search queries
 	function searchAll(){
@@ -323,12 +316,13 @@ $(document).ready(function(){
 			countryCode = '';
 			categoryCode = '';
 
+			// Resets user input fields
 			document.getElementById('searchQuery').value = '';
 			document.getElementById('selectCatagory').value = 'noCatagory';
 			document.getElementById('selectCountry').value = 'noCountry';
-			// Gives verification to the user
+			// Gives validation to the user
 			document.getElementById('newsResults').innerHTML = '';
-			document.getElementById('messages').innerHTML += '<h3>Query:<b> ' + userInputtedSearchTerm + '</b></h3>';
+			document.getElementById('messages').innerHTML += `<h3>Query:<b> ${userInputtedSearchTerm}</b></h3>`;
 		}
 		// If user hasn't entered anything in the search query box, then the code will be removed from the url
 		else if(userInputtedSearchTerm == ''){
@@ -336,19 +330,18 @@ $(document).ready(function(){
 		}
 	}
 
+	// On search button click - Run functions and display artilces
 	$('#searchNews').click(function(){
 		// Clears fields for new site message and articles to be displayed
 		document.getElementById('messages').innerHTML = '';
 		document.getElementById('newsResults').innerHTML = '';
 
 		// Search based off of category
-		getCatagory();
-		// Search based of selected country
-		getCountry();
+		getCodes();
 		// Search based off of user's input
 		searchAll();
 		// Url used that is dynamically changed based off of what the user selects
-		var url = 'http://newsapi.org/v2/' + endPoint + '?' + countryCode + categoryCode + searchTerm + '&apiKey=' + myKey; 
+		var url = `http://newsapi.org/v2/${endPoint}?${countryCode}${categoryCode}${searchTerm}&apiKey=${myKey}`;
 
 		// Gathers and outputs news articles
 		$.ajax({
@@ -369,28 +362,29 @@ $(document).ready(function(){
 				// Displays articles as cards
 				for(i in latestNews){
 					// Outputs the articles in a card format
-					output += 
-						'<div class="col-md-6 col-lg-4 col-xl-3 d-flex align-self-stretch py-4">' +
-							'<div class="card shadow-sm">' +
-								'<img onerror="backupImage(this)" src="' + latestNews[i].urlToImage + '" alt="article image" style="width:100%;">' +
-								'<div class="card-body">' +
-									'<h4>' + latestNews[i].title + '</h4>' +
-									'<h5 class="small text-secondary">' + latestNews[i].author + ' - ' + latestNews[i].source.name + '</h5>' +
-									'<p>' + latestNews[i].description + '</p>' +
-								'</div>' +
-								'<div class="card-footer">' +
-									'<a href="' + latestNews[i].url + '" target="_blank"><button class="btn btn-primary">Full Article</button></a>' +
-								'</div>' +
-							'</div>' +
-						'</div>';
+					output += `
+						<div class="col-md-6 col-lg-4 col-xl-3 d-flex align-self-stretch py-4"> 
+							<div class="card shadow-sm"> 
+								<img onerror="backupImage(this)" src="${latestNews[i].urlToImage}" alt="article image" style="width:100%;"> 
+								<div class="card-body">
+									<h4>${latestNews[i].title}</h4>
+									<h5 class="small text-secondary">${latestNews[i].author} - ${latestNews[i].source.name}</h5> 
+									<p>${latestNews[i].description}</p> 
+								</div>
+								<div class="card-footer"> 
+									<a href="${latestNews[i].url}" target="_blank"><button class="btn btn-primary">Full Article</button></a> 
+								</div> 
+							</div> 
+						</div>`;
 				}
 				if(output !== ''){
 					$('#newsResults').html(output);
 				}
 			},
 			error : function(){
-				alert('An error has occured trying to load your page');
+				getCountry();
 			}
 		});
+		console.log(url);
 	});
-});
+}); // Document ready end
