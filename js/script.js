@@ -253,7 +253,7 @@ $(document).ready(function(){
 	var searchTerm;
 	var userInputtedSearchTerm = '';
 
-	// Function for finding user's input for category and countries
+	// Function for finding user's input for category and countries so that the url can be dynamically created
 	function getCodes(){
 		// Takes user's input for category and converts and checks for code
 		for(i = 0; i < categorys.length; i++){
@@ -286,6 +286,7 @@ $(document).ready(function(){
 			else if ((country === 'noCountry') && (category === 'noCatagory') && (searchTerm === '')){ 
 				countryCode = '';
 				categoryCode = '';
+				// Error message that is displayed when the application isn't working as intended
 				document.getElementById('messages').innerHTML +=
 					`<div class="alert alert-danger alert-dismissible fade show" role="alert">
 						<strong>O Oh!</strong> Please select a country, a category or enter a search query.
@@ -346,6 +347,7 @@ $(document).ready(function(){
 			$('#selectCountry').prop('disabled', true);
 			$('#selectCatagory').prop('disabled', true);
 		}
+		// Enables filters
 		else if(userInputtedSearchTerm === ''){
 			$('#selectCountry').prop('disabled', false);
 			$('#selectCatagory').prop('disabled', false);
@@ -395,10 +397,12 @@ $(document).ready(function(){
 			url : url,
 			method : 'GET',
 			dataType : 'Json',
-	
+			
+			// Reveal loading symbol
 			beforeSend : function(){
 				$('.spinner-border').show(); 
 			},
+			// Hide loading symbol after results are ready to display
 			complete : function(){ 
 				$('.spinner-border').hide();
 			},
